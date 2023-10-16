@@ -1,0 +1,169 @@
+body{
+  height: 100vh;
+  background: #F1F1F1
+}
+
+.title {
+    text-align: center; 
+    padding: 80px 0px 60px 0px;
+  }
+  
+  .todoList {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; 
+    margin: 0;
+  }
+  
+
+.example-container {
+    width: 400px;
+    max-width: 100%;
+    margin: 0 25px 25px 0;
+    display: inline-block;
+    vertical-align: top;
+  }
+  
+  .example-list {
+    border: solid 1px #ccc;
+    min-height: 60px;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+  }
+
+  .example-deneme-box {
+    width: 400px;
+    min-height: 60px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: rgba(0, 0, 0, 0.87);
+    box-sizing: border-box;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 10px auto;
+    background-color: #D0BFFF;
+  }
+
+  .new-todo-input {
+    padding: 15px;
+    width: 350px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: rgba(0, 0, 0, 0.87);;
+    box-sizing: border-box;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .new-todo-input::placeholder {
+    color: #ccc; 
+  }
+  
+  .new-todo-input:focus {
+    border-color: #3DA5FF;
+  }
+  
+  .new-todo-input:focus::placeholder {
+    color: transparent;
+  }
+  
+  
+  .example-todo-box{
+    padding: 20px 10px;
+    border-bottom: solid 1px #ccc;
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: move;
+    background: #3DA5FF;
+    font-size: 14px;
+  }
+
+  .fa-check{
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .fa-circle-plus{
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .fa-circle{
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .fa-circle:hover{
+    color: #74DC2E;
+  }
+
+  .fa-circle-check{
+    margin-right: 10px;
+  }
+
+  .fa-pen-to-square{
+    margin-left: auto;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .fa-pen-to-square:hover{
+    color: #E5D283;
+  }
+
+  .fa-circle-xmark{
+    margin-left: 0;
+    cursor: pointer;
+  }
+
+  .fa-circle-xmark:hover{
+    color: #C70039;
+  }
+ 
+  .example-done-box {
+    padding: 20px 10px;
+    border-bottom: solid 1px #ccc;
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    cursor: move;
+    background: #9DB2BF;
+    font-size: 14px;
+  }
+   
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .example-box:last-child {
+    border: none;
+  }
+  
+  .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+

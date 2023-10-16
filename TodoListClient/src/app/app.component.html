@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="title">
+    <h1>Todo List</h1>
+    <div class="example-deneme-box">
+      <input [(ngModel)]="todoInput" type="text" placeholder="Add a new todo" class="new-todo-input">
+      <i *ngIf="updateButton" (click)="UpdateToDo()" class="fa-solid fa-check" style="font-size: 24px;"></i>
+      <i *ngIf="addButton" (click)="CreateToDo()" class="fa-solid fa-circle-plus" style="font-size: 24px;"></i>
+    </div>
+
+  </div>
+
+  <div class="todoList">
+    <div class="example-container">
+      <h2>To do</h2>
+
+      <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" [cdkDropListConnectedTo]="[doneList]"
+        class="example-list" (cdkDropListDropped)="dropOne($event)">
+        <div class="example-todo-box todo-list" *ngFor="let item of todo" cdkDrag>
+          <i class="fa-regular fa-circle" (click)="check(item.id)" style="font-size: 24px"></i>
+          {{item.work}}
+          <i class="fa-regular fa-pen-to-square" (click)="get(item)" style="font-size: 22px;"></i>
+          <i class="fa-solid fa-circle-xmark" (click)="remove(item.id)" style="font-size: 24px;"></i>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="example-container">
+      <h2>Done</h2>
+
+      <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
+        class="example-list" (cdkDropListDropped)="dropTwo($event)">
+        <div class="example-done-box done-list" *ngFor="let item of done" cdkDrag>
+          <i class="fa-regular fa-circle-check" style="font-size: 24px"></i>
+          {{item.work}}
+          <i class="fa-solid fa-circle-xmark" (click)="check(item.id)" style="font-size: 24px;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" />
+</body>
+
+</html>
