@@ -25,3 +25,7 @@ ASP.NET Core Web API kullanılarak oluşturulan backend kısmında, istemcilerle
 
 - **TodosController.cs**: Todo işlemleri için API endpoint'leri ve iş mantığı bu dosyada bulunur.
 - **AppDbContext.cs**: Entity Framework ile ilişkilendirilmiş veritabanı context sınıfıdır.
+
+## Proje Görseli
+
+![TodoList Project](TodoListProject.gif)
