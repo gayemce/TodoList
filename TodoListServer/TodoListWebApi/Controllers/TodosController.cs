@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using TodoListWebApi.Context;
 using TodoListWebApi.Dtos;
 using TodoListWebApi.Models;
@@ -11,82 +10,80 @@ namespace TodoListWebApi.Controllers;
 public class TodosController : ControllerBase
 {
     [HttpPost]
-    public IActionResult CreateToDo(CreateToDoDto request)
+    public IActionResult Create(CreateToDoDto request)
     {
         AppDbContext context = new();
-        var checkWork = context.Todos.Any(p => p.Work == request.Work);
-        if (checkWork)
+        var CheckWorkIsUnique = context.Todos.Any(p => p.Work == request.Work);
+        if (CheckWorkIsUnique)
         {
-            return BadRequest("This is already on the to-do list.");
+            return BadRequest("The record already exists");
         }
+
         Todo todo = new()
         {
             Work = request.Work,
             IsCompleted = false,
-            CreatedAt = DateTime.Now,
-            CompletedAt = DateTime.Now
+            IsDeleted = false,
+            CreatedDate = DateTime.Now
         };
 
         context.Todos.Add(todo);
         context.SaveChanges();
         return Ok(todo);
-
     }
 
-    [HttpGet("{id}")]
-    public IActionResult RemoveToDo(int id) 
+    [HttpPost("{id}")]
+    public IActionResult Remove(int id)
     {
         AppDbContext context = new();
-        var work = context.Todos.Find(id);
-        if (work == null)
+        var todo = context.Todos.Find(id);
+        if (todo == null)
         {
-            return BadRequest("No such record was found.");
+            return BadRequest("No Records Found");
         }
-        context.Todos.Remove(work);
+        //todo.IsDeleted = true;
+        context.Todos.Remove(todo);
         context.SaveChanges();
-        return Ok(GetAll());
+        return NoContent();
     }
 
     [HttpPost]
-    public IActionResult UpdateToDo(UpdateToDoDto request)
+    public IActionResult Update(UpdateToDoDto request)
     {
         AppDbContext context = new();
-        var work = context.Todos.Find(request.Id);
-        if (work == null)
+        var todo = context.Todos.Find(request.Id);
+        if (todo == null)
         {
-            return NoContent();
+            return BadRequest("No Records Found");
         }
-        work.Work = request.Work;
+        todo.Work = request.Work;
         context.SaveChanges();
-        return Ok(GetAllTodos());
+        return NoContent();
     }
 
     [HttpGet("{id}")]
     public IActionResult ChangeCompleted(int id)
     {
         AppDbContext context = new();
-        var work = context.Todos.Find(id);
-        if(work == null)
+        var todo = context.Todos.Find(id);
+        if (todo == null)
         {
-            return NoContent();
+            return BadRequest("No Records Found");
         }
-        work.IsCompleted = !work.IsCompleted;
-        work.CompletedAt = DateTime.Now;
-
+        todo.IsCompleted = !todo.IsCompleted;
+        todo.CompletedDate = DateTime.Now;
         context.SaveChanges();
-        return Ok(GetAllTodos());
+        return NoContent();
     }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        return Ok(GetAllTodos());
-    }
-
-    private List<Todo> GetAllTodos()
-    {
         AppDbContext context = new();
-        var todos = context.Todos.ToList();
-        return todos;
+
+        var todos = context.Todos
+            .OrderByDescending(o => o.CompletedDate)
+            .ToList();
+        return Ok(todos);
     }
 }

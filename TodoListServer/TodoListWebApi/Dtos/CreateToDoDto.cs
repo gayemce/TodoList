@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TodoListWebApi.Dtos;
+﻿namespace TodoListWebApi.Dtos;
 
 public sealed record CreateToDoDto(
     string Work);
