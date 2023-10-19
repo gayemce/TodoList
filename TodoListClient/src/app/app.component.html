@@ -12,8 +12,8 @@
     <h1>Todo List</h1>
     <div class="example-deneme-box">
       <input [(ngModel)]="todoInput" type="text" placeholder="Add a new todo" class="new-todo-input">
-      <i *ngIf="updateButton" (click)="UpdateToDo()" class="fa-solid fa-check" style="font-size: 24px;"></i>
-      <i *ngIf="addButton" (click)="CreateToDo()" class="fa-solid fa-circle-plus" style="font-size: 24px;"></i>
+      <i *ngIf="updateButtonDisplay" (click)="update()" class="fa-solid fa-check" style="font-size: 24px;"></i>
+      <i *ngIf="addButtonDisplay" (click)="create()" class="fa-solid fa-circle-plus" style="font-size: 24px;"></i>
     </div>
 
   </div>
@@ -25,7 +25,7 @@
       <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" [cdkDropListConnectedTo]="[doneList]"
         class="example-list" (cdkDropListDropped)="dropOne($event)">
         <div class="example-todo-box todo-list" *ngFor="let item of todo" cdkDrag>
-          <i class="fa-regular fa-circle" (click)="check(item.id)" style="font-size: 24px"></i>
+          <i class="fa-regular fa-circle" (click)="changeCompleted(item.id)" style="font-size: 24px"></i>
           {{item.work}}
           <i class="fa-regular fa-pen-to-square" (click)="get(item)" style="font-size: 22px;"></i>
           <i class="fa-solid fa-circle-xmark" (click)="remove(item.id)" style="font-size: 24px;"></i>
@@ -43,7 +43,7 @@
         <div class="example-done-box done-list" *ngFor="let item of done" cdkDrag>
           <i class="fa-regular fa-circle-check" style="font-size: 24px"></i>
           {{item.work}}
-          <i class="fa-solid fa-circle-xmark" (click)="check(item.id)" style="font-size: 24px;"></i>
+          <i class="fa-solid fa-circle-xmark" (click)="changeCompleted(item.id)" style="font-size: 24px;"></i>
         </div>
       </div>
     </div>

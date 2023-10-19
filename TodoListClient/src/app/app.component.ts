@@ -12,93 +12,78 @@ import { SweetAlertService } from './sweetalert.service';
 })
 export class AppComponent {
   request: TodoModel = new TodoModel();
-
-  todos: TodoModel[] = [];
+  todos: TodoModel[] = []
   todo: TodoModel[] = [];
   done: TodoModel[] = [];
-
   todoInput: string = "";
-  updateTodoValue: string = "";
-  updateTodoId: number = 0;
-  addButton = true;
-  updateButton: boolean = false;
-  errorMessage: string = "";
-  deleted: any = [];
+  updateButtonDisplay: boolean = false;
+  addButtonDisplay: boolean = true;
+  updateId: number = 0;
 
-  constructor(private http: HttpClient, private sweetAlertService: SweetAlertService) {
+  constructor(
+    private http: HttpClient,
+    private sweetAlertService: SweetAlertService) {
     this.getAll();
   }
 
-  CreateToDo() {
+  create() {
     if (!this.todoInput || this.todoInput.trim() === '') {
       this.sweetAlertService.showErrorAlert('Enter a value.');
       return;
     }
-
     if (this.todos.some(t => t.work.toLowerCase() === this.todoInput.toLowerCase())) {
       this.sweetAlertService.showErrorAlert('This item already exists.');
       this.todoInput = '';
-      this.updateButton = false;
-      this.addButton = true;
       return;
     }
 
     this.request.work = this.todoInput;
-
-    this.http.post<TodoModel[]>(`https://localhost:7035/api/Todos/CreateToDo`, this.request)
+    this.http.post<TodoModel[]>(`https://localhost:7035/api/Todos/Create`, this.request)
       .subscribe(res => {
-        this.todos = res;
-        this.getAll();
+        this.todo = res;
         this.todoInput = '';
-      });
+        this.getAll();
+      })
   }
 
-  UpdateToDo() {
+  update() {
     if (!this.todoInput || this.todoInput.trim() === '') {
       this.sweetAlertService.showErrorAlert('Enter a value.');
       return;
     }
-
     if (this.todos.some(t => t.work.toLowerCase() === this.todoInput.toLowerCase())) {
       this.sweetAlertService.showErrorAlert('This item already exists.');
       this.todoInput = '';
-      this.updateButton = false;
-      this.addButton = true;
+      this.updateButtonDisplay = false;
+      this.addButtonDisplay = true;
       return;
     }
 
+    this.request.id = this.updateId;
     this.request.work = this.todoInput;
-    this.request.id = this.updateTodoId;
-
-    this.http.post<TodoModel[]>(`https://localhost:7035/api/Todos/UpdateToDo`, this.request)
+    this.http.post<TodoModel[]>(`https://localhost:7035/api/Todos/Update`, this.request)
       .subscribe(res => {
-        this.todos = res;
-        this.getAll();
+        this.todo = res;
+        this.updateButtonDisplay = false;
+        this.addButtonDisplay = true;
         this.todoInput = '';
-        this.updateButton = false;
-        this.addButton = true;
-      });
+        this.getAll();
+      })
   }
 
   get(item: TodoModel) {
-    this.updateTodoValue = item.work;
-    this.updateTodoId = item.id;
-    this.todoInput = this.updateTodoValue;
-    this.updateButton = true;
-    this.addButton = false;
-  }
-
-
-  RemoveToDo(id: number) {
-    this.http.get<TodoModel[]>(`https://localhost:7035/api/Todos/RemoveToDo/${id}`)
-      .subscribe(res => {
-        this.deleted = res;
-        this.getAll();
-      });
+    this.todoInput = item.work;
+    this.updateId = item.id;
+    this.addButtonDisplay = false;
+    this.updateButtonDisplay = true;
   }
 
   remove(id: number) {
-    this.RemoveToDo(id);
+    this.http.post<TodoModel[]>(`https://localhost:7035/api/Todos/Remove/${id}`, this.request)
+      .subscribe(res => {
+        this.todos = res;
+        this.getAll();
+      })
   }
 
   getAll() {
@@ -125,12 +110,8 @@ export class AppComponent {
     this.http.get<TodoModel[]>(`https://localhost:7035/api/Todos/ChangeCompleted/${id}`)
       .subscribe(res => {
         this.todos = res;
-        this.splitTodosToTodoAndDone();
+        this.getAll();
       });
-  }
-
-  check(id: number) {
-    this.changeCompleted(id)
   }
 
   dropOne(event: CdkDragDrop<TodoModel[]>) {
